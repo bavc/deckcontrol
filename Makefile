@@ -1,4 +1,4 @@
-BMSDK = /Users/georg/MobileBroadcast/Blackmagic\ DeckLink\ SDK\ 8.5/Mac/include
+BMSDK = ../Blackmagic\ DeckLink\ SDK\ 10.1.1/Mac/include
 
 CC = gcc
 CFLAGS = -I$(BMSDK) -g
