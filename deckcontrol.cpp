@@ -49,8 +49,8 @@ static const DeckCommandMapping commandTable [] = {
     { "toggleplaystop", TOGGLE_PLAY_STOP, 0 },
     { "eject", EJECT, 0 },
     { "gototimecode", GO_TO_TIMECODE, 1 },
-    { "fastforward", FAST_FORWARD, 1 },
-    { "rewind", REWIND, 1 },
+    { "fastforward", FAST_FORWARD, 0 },
+    { "rewind", REWIND, 0 },
     { "stepforward", STEP_FORWARD, 0 },
     { "stepback", STEP_BACK, 0 },
     { "jog", JOG, 1 },
@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
 {
     int err = 0;
     DeckCommand cmd = NO_COMMAND;
+    const char *cmdarg;
     const DeckCommandMapping *tmpTable;
 
     IDeckLinkIterator *deckLinkIterator = NULL;
@@ -126,6 +127,10 @@ int main(int argc, char *argv[])
                 argc - 2 >= tmpTable->numParameters)
             {
                 cmd = tmpTable->commandNum;
+                if (argc > 2)
+                    cmdarg = argv[2];
+                else
+                    cmdarg = "0";
                 printf("Issued command '%s'\n", tmpTable->commandString);
             }
             tmpTable++;
@@ -214,15 +219,14 @@ int main(int argc, char *argv[])
         break;
     case GO_TO_TIMECODE:
         int tc[4];
-        char *c;
-        c = strtok(argv[2], ":");
+        cmdarg = strtok(argv[2], ":");
         for (int i=0; i<4; i++)
         {
-            if (!c) break;
-            tc[i] = atoi(c);
+            if (!cmdarg) break;
+            tc[i] = atoi(cmdarg);
             if (tc[i] > 59 || tc[i] < 0)
                 tc[i] = 0;
-            c = strtok(NULL, ":");
+            cmdarg = strtok(NULL, ":");
         }
         deckControl->GoToTimecode(MAKE_TC_BCD(tc[0] / 10, tc[0] % 10,
                                               tc[1] / 10, tc[1] % 10,
@@ -231,10 +235,10 @@ int main(int argc, char *argv[])
                                   &deckError);
         break;
     case FAST_FORWARD:
-        deckControl->FastForward(atoi(argv[2]), &deckError);
+        deckControl->FastForward(atoi(cmdarg), &deckError);
         break;
     case REWIND:
-        deckControl->Rewind(atoi(argv[2]), &deckError);
+        deckControl->Rewind(atoi(cmdarg), &deckError);
         break;
     case STEP_FORWARD:
         deckControl->StepForward(&deckError);
