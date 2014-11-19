@@ -22,6 +22,7 @@ enum DeckCommand {
     STEP_BACK,
     JOG,
     SHUTTLE,
+    GET_TIMECODE,
     CRASH_RECORD_START,
     CRASH_RECORD_STOP
 };
@@ -57,6 +58,7 @@ static const DeckCommandMapping commandTable [] = {
     { "stepback", STEP_BACK, 0 },
     { "jog", JOG, 1 },
     { "shuttle", SHUTTLE, 1 },
+    { "gettimecode", GET_TIMECODE, 0 },
     { "crashrecordstart", CRASH_RECORD_START, 0 },
     { "crashrecordstop", CRASH_RECORD_STOP, 0 },
     { NULL }
@@ -260,6 +262,11 @@ int main(int argc, char *argv[])
         break;
     case SHUTTLE:
         deckControl->Shuttle(atof(argv[2]), &deckError);
+        break;
+    case GET_TIMECODE:
+        const char *tcs;
+        deckControl->GetTimecodeString(&tcs, &deckError);
+        printf("TC=%s\n", tcs);
         break;
     case CRASH_RECORD_START:
         deckControl->CrashRecordStart(&deckError);
