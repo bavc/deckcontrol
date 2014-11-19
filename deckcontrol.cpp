@@ -9,6 +9,7 @@
 
 enum DeckCommand {
     NO_COMMAND = -1,
+    GET_CURRENT_STATE,
     SET_STANDBY,
     PLAY,
     STOP,
@@ -44,6 +45,7 @@ struct DeckCommandMapping
 };
 
 static const DeckCommandMapping commandTable [] = {
+    { "getcurrentstate", GET_CURRENT_STATE, 0 },
     { "play", PLAY, 0 },
     { "stop", STOP, 0 },
     { "toggleplaystop", TOGGLE_PLAY_STOP, 0 },
@@ -205,6 +207,13 @@ int main(int argc, char *argv[])
 
     switch(cmd)
     {
+    case GET_CURRENT_STATE:
+        BMDDeckControlMode mode;
+        BMDDeckControlVTRControlState vtrControlState;
+        BMDDeckControlStatusFlags flags;
+        deckControl->GetCurrentState(&mode, &vtrControlState, &flags);
+        printf("VTR control state: %s\n", STATE_TO_STR(deckError));
+        break;
     case PLAY:
         deckControl->Play(&deckError);
         break;
