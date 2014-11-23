@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
         BMDDeckControlVTRControlState vtrControlState;
         BMDDeckControlStatusFlags flags;
         deckControl->GetCurrentState(&mode, &vtrControlState, &flags);
-        printf("VTR control state: %s\n", STATE_TO_STR(deckError));
+        printf("VTR control state: %s\n", STATE_TO_STR(vtrControlState));
         break;
     case PLAY:
         deckControl->Play(&deckError);
