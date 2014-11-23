@@ -1,3 +1,4 @@
+#include <inttypes.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -264,9 +265,13 @@ int main(int argc, char *argv[])
         deckControl->Shuttle(atof(argv[2]), &deckError);
         break;
     case GET_TIMECODE:
-        const char *tcs;
-        deckControl->GetTimecodeString(&tcs, &deckError);
-        printf("TC=%s\n", tcs);
+        IDeckLinkTimecode *currentTimecode;
+        uint8_t hours, minutes, seconds, frames;
+        deckControl->GetTimecode(&currentTimecode, &deckError);
+        currentTimecode->GetComponents(&hours, &minutes, &seconds, &frames);
+        printf("TC=%02"PRIu8":%02"PRIu8":%02"PRIu8":%02"PRIu8"\n",
+               hours, minutes, seconds, frames);
+        SAFE_RELEASE(currentTimecode);
         break;
     case CRASH_RECORD_START:
         deckControl->CrashRecordStart(&deckError);
