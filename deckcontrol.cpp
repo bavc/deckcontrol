@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
         uint8_t hours, minutes, seconds, frames;
         deckControl->GetTimecode(&currentTimecode, &deckError);
         currentTimecode->GetComponents(&hours, &minutes, &seconds, &frames);
-        printf("TC=%02"PRIu8":%02"PRIu8":%02"PRIu8":%02"PRIu8"\n",
+        printf("TC=%02" PRIu8 ":%02" PRIu8 ":%02" PRIu8 ":%02" PRIu8 "\n",
                hours, minutes, seconds, frames);
         SAFE_RELEASE(currentTimecode);
         break;
